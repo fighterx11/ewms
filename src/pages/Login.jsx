@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Wallet } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,12 +18,25 @@ const Login = () => {
     return regex.test(num);
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     const formattedMobile = mobile.startsWith("+91") ? mobile : `+91${mobile}`;
-    
+
     if (!validateMobile(formattedMobile)) {
       toast.error("Enter a valid Indian mobile number");
       return;
+    }
+
+    if (!isNewUser) {
+      const { data, error } = await supabase
+        .from("users")
+        .select("id")
+        .eq("mobile", formattedMobile)
+        .maybeSingle();
+
+      if (error || !data) {
+        toast.error("Phone number not registered. Please create an account first.");
+        return;
+      }
     }
 
     // Store mobile for OTP verification
@@ -71,7 +85,7 @@ const Login = () => {
             </div>
           </div>
 
-          <Button 
+          <Button
             className="w-full h-12 text-base font-semibold"
             onClick={handleContinue}
           >

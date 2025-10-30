@@ -69,16 +69,14 @@ const PinVerification = ({ open, onOpenChange, onSuccess, title = "Verify PIN" }
             maxLength={4}
             value={pin}
             onChange={setPin}
-            render={({ slots }) => (
-              <InputOTPGroup>
-                {slots.map((slot, index) => (
-                  <InputOTPSlot key={index} index={index} className="[&>*]:text-[0px]">
-                    {slot.char ? "●" : ""}
-                  </InputOTPSlot>
-                ))}
-              </InputOTPGroup>
-            )}
-          />
+          >
+            <InputOTPGroup>
+              <InputOTPSlot index={0} mask />
+              <InputOTPSlot index={1} mask />
+              <InputOTPSlot index={2} mask />
+              <InputOTPSlot index={3} mask />
+            </InputOTPGroup>
+          </InputOTP>
 
           <div className="flex gap-3 w-full">
             <Button

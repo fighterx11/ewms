@@ -22,7 +22,7 @@ const InputOTPGroup = React.forwardRef(
 InputOTPGroup.displayName = "InputOTPGroup";
 
 const InputOTPSlot = React.forwardRef(
-  ({ index, className, ...props }, ref) => {
+  ({ index, className, mask = false, ...props }, ref) => {
     const inputOTPContext = React.useContext(OTPInputContext);
     const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index];
 
@@ -36,7 +36,7 @@ const InputOTPSlot = React.forwardRef(
         )}
         {...props}
       >
-        {char}
+        {char ? (mask ? "●" : char) : null}
         {hasFakeCaret && (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
             <div className="animate-caret-blink h-4 w-px bg-foreground duration-1000" />
