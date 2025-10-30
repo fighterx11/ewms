@@ -26,15 +26,21 @@ const Login = () => {
       return;
     }
 
-    if (!isNewUser) {
-      const { data, error } = await supabase
-        .from("users")
-        .select("id")
-        .eq("mobile", formattedMobile)
-        .maybeSingle();
+    // Check if user exists in database
+    const { data, error } = await supabase
+      .from("users")
+      .select("id")
+      .eq("mobile", formattedMobile)
+      .maybeSingle();
 
+    if (!isNewUser) {
       if (error || !data) {
         toast.error("Phone number not registered. Please create an account first.");
+        return;
+      }
+    } else {
+      if (data) {
+        toast.error("Phone number already registered. Please login instead.");
         return;
       }
     }
