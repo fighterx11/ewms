@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Smartphone, Zap, Droplet, Receipt } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import PinVerification from "@/components/PinVerification";
 
 const BillPay = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const BillPay = () => {
   const [accountNumber, setAccountNumber] = useState("");
   const [amount, setAmount] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showPinVerification, setShowPinVerification] = useState(false);
 
   const categories = [
     { id: "mobile", name: "Mobile Recharge", icon: Smartphone, color: "text-primary" },
@@ -28,7 +30,7 @@ const BillPay = () => {
     water: ["Mumbai Water", "Delhi Jal Board"]
   };
 
-  const handlePay = async () => {
+  const handleInitiatePay = () => {
     const userId = sessionStorage.getItem("easypay_user_id");
     if (!userId) {
       navigate("/login");
@@ -45,6 +47,14 @@ const BillPay = () => {
       toast.error("Please enter a valid amount");
       return;
     }
+
+    // Show PIN verification before processing
+    setShowPinVerification(true);
+  };
+
+  const handlePay = async () => {
+    const userId = sessionStorage.getItem("easypay_user_id");
+    const amountNum = parseFloat(amount);
 
     setIsProcessing(true);
 
@@ -198,7 +208,7 @@ const BillPay = () => {
 
                   <Button
                     className="w-full h-12 text-base font-semibold"
-                    onClick={handlePay}
+                    onClick={handleInitiatePay}
                     disabled={isProcessing}
                   >
                     {isProcessing ? "Processing..." : "Pay Bill"}
@@ -208,6 +218,12 @@ const BillPay = () => {
             </>
           )}
 
+          <PinVerification
+            open={showPinVerification}
+            onOpenChange={setShowPinVerification}
+            onSuccess={handlePay}
+            title="Verify PIN to Pay Bill"
+          />
           <div className="mt-6 p-4 bg-accent/50 rounded-lg">
             <p className="text-xs text-center text-muted-foreground">
               <span className="font-semibold">Prototype Mode:</span> All providers are dummy

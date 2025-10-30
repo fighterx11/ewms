@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Send, User } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import PinVerification from "@/components/PinVerification";
 
 const SendMoney = () => {
   const navigate = useNavigate();
@@ -17,12 +18,13 @@ const SendMoney = () => {
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showPinVerification, setShowPinVerification] = useState(false);
 
   const quickAmounts = [100, 500, 1000, 2000];
 
   const handleMobileLookup = async () => {
     const formattedMobile = mobile.startsWith("+91") ? mobile : `+91${mobile}`;
-    
+
     if (formattedMobile.length !== 13) {
       toast.error("Enter a valid 10-digit mobile number");
       return;
@@ -46,7 +48,7 @@ const SendMoney = () => {
     toast.success(`Found: ${data.full_name || "EasyPay User"}`);
   };
 
-  const handleSendMoney = async () => {
+  const handleInitiateSend = () => {
     const userId = sessionStorage.getItem("easypay_user_id");
     if (!userId) {
       navigate("/login");
@@ -63,6 +65,14 @@ const SendMoney = () => {
       toast.error("Please enter a valid amount");
       return;
     }
+
+    // Show PIN verification before processing
+    setShowPinVerification(true);
+  };
+
+  const handleSendMoney = async () => {
+    const userId = sessionStorage.getItem("easypay_user_id");
+    const amountNum = parseFloat(amount);
 
     setIsProcessing(true);
 
@@ -240,7 +250,7 @@ const SendMoney = () => {
 
               <Button
                 className="w-full h-12 text-base font-semibold"
-                onClick={handleSendMoney}
+                onClick={handleInitiateSend}
                 disabled={isProcessing}
               >
                 {isProcessing ? "Sending..." : "Send Money"}
@@ -248,6 +258,12 @@ const SendMoney = () => {
             </>
           )}
 
+          <PinVerification
+            open={showPinVerification}
+            onOpenChange={setShowPinVerification}
+            onSuccess={handleSendMoney}
+            title="Verify PIN to Send Money"
+          />
           <div className="mt-6 p-4 bg-accent/50 rounded-lg">
             <p className="text-xs text-center text-muted-foreground">
               <span className="font-semibold">Try:</span> +919876543210, +919876543211, +919876543212

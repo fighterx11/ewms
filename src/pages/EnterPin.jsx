@@ -31,13 +31,13 @@ const EnterPin = () => {
     if (pin !== "1234") {
       const newAttempts = attempts + 1;
       setAttempts(newAttempts);
-      
+
       if (newAttempts >= 3) {
         toast.error("Account locked. Please refresh to retry.");
         setPin("");
         return;
       }
-      
+
       toast.error(`Wrong PIN. Try 1234. ${3 - newAttempts} attempts remaining.`);
       setPin("");
       return;
@@ -60,7 +60,7 @@ const EnterPin = () => {
     sessionStorage.setItem("easypay_user_id", userData.id);
     sessionStorage.setItem("easypay_user_mobile", userData.mobile);
     sessionStorage.setItem("easypay_user_name", userData.full_name || "User");
-    
+
     toast.success("Login successful!");
     navigate("/dashboard");
   };
@@ -94,17 +94,19 @@ const EnterPin = () => {
               maxLength={4}
               value={pin}
               onChange={setPin}
-            >
-              <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-                <InputOTPSlot index={3} />
-              </InputOTPGroup>
-            </InputOTP>
+              render={({ slots }) => (
+                <InputOTPGroup>
+                  {slots.map((slot, index) => (
+                    <InputOTPSlot key={index} index={index} className="[&>*]:text-[0px]">
+                      {slot.char ? "●" : ""}
+                    </InputOTPSlot>
+                  ))}
+                </InputOTPGroup>
+              )}
+            />
           </div>
 
-          <Button 
+          <Button
             className="w-full h-12 text-base font-semibold"
             onClick={handleLogin}
             disabled={attempts >= 3}

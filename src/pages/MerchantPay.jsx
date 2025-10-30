@@ -7,12 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Receipt, QrCode, Store } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import PinVerification from "@/components/PinVerification";
 
 const MerchantPay = () => {
   const navigate = useNavigate();
   const [merchantId, setMerchantId] = useState("");
   const [amount, setAmount] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showPinVerification, setShowPinVerification] = useState(false);
 
   const quickAmounts = [50, 100, 200, 500];
   const dummyMerchants = [
@@ -21,7 +23,7 @@ const MerchantPay = () => {
     { id: "MERCH789", name: "Pizza Hut" }
   ];
 
-  const handlePay = async () => {
+  const handleInitiatePay = () => {
     const userId = sessionStorage.getItem("easypay_user_id");
     if (!userId) {
       navigate("/login");
@@ -38,6 +40,14 @@ const MerchantPay = () => {
       toast.error("Please enter a valid amount");
       return;
     }
+
+    // Show PIN verification before processing
+    setShowPinVerification(true);
+  };
+
+  const handlePay = async () => {
+    const userId = sessionStorage.getItem("easypay_user_id");
+    const amountNum = parseFloat(amount);
 
     setIsProcessing(true);
 
@@ -188,11 +198,18 @@ const MerchantPay = () => {
 
           <Button
             className="w-full h-12 text-base font-semibold"
-            onClick={handlePay}
+            onClick={handleInitiatePay}
             disabled={isProcessing}
           >
             {isProcessing ? "Processing..." : "Pay Now"}
           </Button>
+
+          <PinVerification
+            open={showPinVerification}
+            onOpenChange={setShowPinVerification}
+            onSuccess={handlePay}
+            title="Verify PIN to Pay Merchant"
+          />
 
           <div className="mt-6 p-4 bg-accent/50 rounded-lg">
             <p className="text-xs text-center text-muted-foreground">
