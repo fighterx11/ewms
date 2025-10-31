@@ -25,9 +25,18 @@ const BillPay = () => {
   ];
 
   const providers = {
-    mobile: ["Airtel", "Jio", "Vi", "BSNL"],
-    electricity: ["MSEB", "Adani Power", "Tata Power"],
-    water: ["Mumbai Water", "Delhi Jal Board"]
+    mobile: [
+      { name: "Airtel", logo: "/airtel-logo.png" },
+      { name: "Jio", logo: "/jio-logo.png" },
+      { name: "Vi", logo: "/vi-logo.png" },
+      { name: "BSNL", logo: "/bsnl-logo.png" }
+    ],
+    electricity: [
+      { name: "CESC (West Bengal)", logo: "/cesc-logo.png" }
+    ],
+    water: [
+      { name: "Kolkata Water Board", logo: "/kmc-water-logo.png" }
+    ]
   };
 
   const handleInitiatePay = () => {
@@ -142,15 +151,22 @@ const BillPay = () => {
               {/* Provider Selection */}
               <div className="space-y-2 mb-4">
                 <Label>Select Provider</Label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className={`grid gap-3 ${category === "mobile" ? "grid-cols-2" : "grid-cols-1"}`}>
                   {providers[category]?.map((prov) => (
                     <Button
-                      key={prov}
-                      variant={provider === prov ? "default" : "outline"}
-                      onClick={() => setProvider(prov)}
-                      className="h-12"
+                      key={prov.name}
+                      variant={provider === prov.name ? "default" : "outline"}
+                      onClick={() => setProvider(prov.name)}
+                      className="h-16 justify-start gap-3 px-4"
                     >
-                      {prov}
+                      <div className="w-10 h-10 rounded-lg bg-background border border-border overflow-hidden flex items-center justify-center flex-shrink-0">
+                        <img
+                          src={prov.logo}
+                          alt={prov.name}
+                          className="w-8 h-8 object-contain"
+                        />
+                      </div>
+                      <span className="font-medium">{prov.name}</span>
                     </Button>
                   ))}
                 </div>

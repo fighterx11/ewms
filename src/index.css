@@ -2,9 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here.
+All colors MUST be HSL.
+*/
+
 @layer base {
   :root {
-    /* EasyPay Design System */
+    /* EasyPay Paytm-inspired Design System */
     --background: 0 0% 98%;
     --foreground: 224 15% 15%;
 
@@ -104,5 +108,16 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }

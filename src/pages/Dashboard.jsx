@@ -4,13 +4,13 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { 
-  Wallet, 
-  Plus, 
-  Send, 
-  Receipt, 
-  History, 
-  Settings, 
+import {
+  Wallet,
+  Plus,
+  Send,
+  Receipt,
+  History,
+  Settings,
   RefreshCw,
   ArrowDownLeft,
   ArrowUpRight
@@ -26,7 +26,7 @@ const Dashboard = () => {
   useEffect(() => {
     const userId = sessionStorage.getItem("easypay_user_id");
     const storedName = sessionStorage.getItem("easypay_user_name");
-    
+
     if (!userId) {
       navigate("/login");
       return;
@@ -169,6 +169,45 @@ const Dashboard = () => {
               </div>
               <span className="text-xs font-semibold">Pay</span>
             </Button>
+          </div>
+        </Card>
+
+        {/* Bill Pay Section */}
+        <Card className="p-6 shadow-lg mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-bold text-foreground">Pay Bills & Recharge</h3>
+            <button
+              onClick={() => navigate("/bill-pay")}
+              className="text-sm text-primary hover:text-primary-dark font-medium"
+            >
+              View All →
+            </button>
+          </div>
+
+          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+            {[
+              { name: "Jio", logo: "/jio-logo.png" },
+              { name: "Airtel", logo: "/airtel-logo.png" },
+              { name: "Vi", logo: "/vi-logo.png" },
+              { name: "BSNL", logo: "/bsnl-logo.png" },
+              { name: "CESC", logo: "/cesc-logo.png" },
+              { name: "Water", logo: "/kmc-water-logo.png" },
+            ].map((provider) => (
+              <button
+                key={provider.name}
+                onClick={() => navigate("/bill-pay")}
+                className="flex flex-col items-center gap-2 min-w-[80px] p-3 hover:bg-accent/50 rounded-lg transition-colors"
+              >
+                <div className="w-14 h-14 rounded-full bg-background border border-border overflow-hidden flex items-center justify-center">
+                  <img
+                    src={provider.logo}
+                    alt={provider.name}
+                    className="w-12 h-12 object-contain"
+                  />
+                </div>
+                <span className="text-xs font-medium text-foreground">{provider.name}</span>
+              </button>
+            ))}
           </div>
         </Card>
 
