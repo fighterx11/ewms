@@ -14,6 +14,7 @@ import AddMoney from "./pages/AddMoney";
 import SendMoney from "./pages/SendMoney";
 import MerchantPay from "./pages/MerchantPay";
 import BillPay from "./pages/BillPay";
+import MetroBooking from "./pages/MetroBooking";
 import History from "./pages/History";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/send-money" element={<SendMoney />} />
           <Route path="/merchant-pay" element={<MerchantPay />} />
           <Route path="/bill-pay" element={<BillPay />} />
+          <Route path="/metro-booking" element={<MetroBooking />} />
           <Route path="/history" element={<History />} />
           <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

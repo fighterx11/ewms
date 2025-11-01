@@ -14,7 +14,7 @@ const Welcome = () => {
             <Wallet className="w-10 h-10 text-primary-foreground" />
           </div>
           <h1 className="text-4xl font-bold text-foreground mb-2">EasyPay</h1>
-          <p className="text-muted-foreground">India's Simplest Payment App</p>
+          <p className="text-muted-foreground">India's Simplest E-Wallet App</p>
         </div>
 
         <div className="space-y-4 mb-8">
@@ -40,7 +40,7 @@ const Welcome = () => {
         </div>
 
         <div className="space-y-3">
-          <Button 
+          <Button
             className="w-full h-12 text-base font-semibold"
             onClick={() => navigate("/login")}
           >

@@ -4,12 +4,13 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
-import { 
-  ArrowLeft, 
-  ArrowDownLeft, 
-  ArrowUpRight, 
-  Search, 
-  Filter 
+import MetroTicketDialog from "@/components/MetroTicketDialog";
+import {
+  ArrowLeft,
+  ArrowDownLeft,
+  ArrowUpRight,
+  Search,
+  Filter
 } from "lucide-react";
 
 const History = () => {
@@ -18,6 +19,8 @@ const History = () => {
   const [filteredTxns, setFilteredTxns] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState("all");
+  const [selectedMetroTicket, setSelectedMetroTicket] = useState(null);
+  const [showMetroTicket, setShowMetroTicket] = useState(false);
 
   useEffect(() => {
     const userId = sessionStorage.getItem("easypay_user_id");
@@ -83,6 +86,17 @@ const History = () => {
     { id: "bills", label: "Bills" }
   ];
 
+  const isMetroTransaction = (txn) => {
+    return txn.counterparty_name === "Aamar Kolkata Metro" && txn.note?.includes("Metro:");
+  };
+
+  const handleTransactionClick = (txn) => {
+    if (isMetroTransaction(txn)) {
+      setSelectedMetroTicket(txn);
+      setShowMetroTicket(true);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-6">
       <div className="max-w-2xl mx-auto">
@@ -135,10 +149,11 @@ const History = () => {
               {filteredTxns.map((txn) => {
                 const isPositive = txn.type === "received" || txn.type === "add_money";
                 const displayName = txn.counterparty_name || txn.merchant_id || txn.type;
-                
+
                 return (
                   <div
                     key={txn.id}
+                    onClick={() => handleTransactionClick(txn)}
                     className="flex items-center justify-between p-4 hover:bg-accent/50 rounded-lg transition-colors cursor-pointer"
                   >
                     <div className="flex items-center gap-3 flex-1">
@@ -190,6 +205,12 @@ const History = () => {
             </div>
           )}
         </Card>
+
+        <MetroTicketDialog
+          open={showMetroTicket}
+          onOpenChange={setShowMetroTicket}
+          transaction={selectedMetroTicket}
+        />
       </div>
     </div>
   );

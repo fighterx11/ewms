@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import MetroTicketDialog from "@/components/MetroTicketDialog";
 import {
   Wallet,
   Plus,
@@ -22,6 +23,8 @@ const Dashboard = () => {
   const [userName, setUserName] = useState("User");
   const [recentTransactions, setRecentTransactions] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [selectedMetroTicket, setSelectedMetroTicket] = useState(null);
+  const [showMetroTicket, setShowMetroTicket] = useState(false);
 
   useEffect(() => {
     const userId = sessionStorage.getItem("easypay_user_id");
@@ -81,6 +84,17 @@ const Dashboard = () => {
     if (date.toDateString() === today.toDateString()) return "Today";
     if (date.toDateString() === yesterday.toDateString()) return "Yesterday";
     return date.toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+  };
+
+  const isMetroTransaction = (txn) => {
+    return txn.counterparty_name === "Aamar Kolkata Metro" && txn.note?.includes("Metro:");
+  };
+
+  const handleTransactionClick = (txn) => {
+    if (isMetroTransaction(txn)) {
+      setSelectedMetroTicket(txn);
+      setShowMetroTicket(true);
+    }
   };
 
   return (
@@ -211,6 +225,35 @@ const Dashboard = () => {
           </div>
         </Card>
 
+        {/* Metro Booking Section */}
+        <Card className="p-6 shadow-lg mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-bold text-foreground">Aamar Kolkata Metro</h3>
+            <span className="text-xs bg-success/10 text-success px-2 py-1 rounded-full font-semibold">
+              10% OFF
+            </span>
+          </div>
+
+          <button
+            onClick={() => navigate("/metro-booking")}
+            className="w-full flex items-center gap-4 p-4 hover:bg-accent/50 rounded-lg transition-colors border border-border"
+          >
+            <div className="w-16 h-16 rounded-full bg-primary/10 overflow-hidden flex items-center justify-center">
+              <img
+                src="/kolkata-metro-logo.png"
+                alt="Kolkata Metro"
+                className="w-14 h-14 object-contain"
+              />
+            </div>
+            <div className="flex-1 text-left">
+              <p className="font-semibold text-foreground">Book Metro Tickets</p>
+              <p className="text-xs text-muted-foreground">Blue, Green, Purple & Orange Lines</p>
+              <p className="text-xs text-success mt-1">Special discount on all bookings</p>
+            </div>
+            <span className="text-primary font-semibold">→</span>
+          </button>
+        </Card>
+
         {/* Recent Transactions */}
         <Card className="p-6 shadow-lg">
           <div className="flex items-center justify-between mb-4">
@@ -233,6 +276,7 @@ const Dashboard = () => {
               {recentTransactions.map((txn) => (
                 <div
                   key={txn.id}
+                  onClick={() => handleTransactionClick(txn)}
                   className="flex items-center justify-between p-3 hover:bg-accent/50 rounded-lg transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
@@ -273,6 +317,12 @@ const Dashboard = () => {
             </div>
           )}
         </Card>
+
+        <MetroTicketDialog
+          open={showMetroTicket}
+          onOpenChange={setShowMetroTicket}
+          transaction={selectedMetroTicket}
+        />
       </div>
     </div>
   );
