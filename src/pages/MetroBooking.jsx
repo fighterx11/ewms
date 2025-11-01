@@ -313,10 +313,10 @@ const MetroBooking = () => {
                   key={key}
                   variant={selectedLine === key ? "default" : "outline"}
                   onClick={() => handleLineChange(key)}
-                  className="h-auto py-3 justify-start gap-2"
+                  className="h-auto py-3 justify-start gap-2 items-center"
                 >
-                  <div className={`w-3 h-3 rounded-full ${line.color}`} />
-                  <span className="text-sm font-semibold">{line.name}</span>
+                  <div className={`w-3 h-3 rounded-full ${line.color} flex-shrink-0`} />
+                  <span className="text-xs sm:text-sm font-semibold text-left">{line.name}</span>
                 </Button>
               ))}
             </div>

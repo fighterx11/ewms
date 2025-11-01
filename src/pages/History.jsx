@@ -156,7 +156,7 @@ const History = () => {
                     onClick={() => handleTransactionClick(txn)}
                     className="flex items-center justify-between p-4 hover:bg-accent/50 rounded-lg transition-colors cursor-pointer"
                   >
-                    <div className="flex items-center gap-3 flex-1">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
                       <div
                         className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
                           isPositive ? "bg-success/10" : "bg-destructive/10"
