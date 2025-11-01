@@ -1,79 +1,122 @@
-# EasyPay Wallet (EWMS)
+# 💳 EasyPay Wallet (EWMS)
 
-This is a prototype of EasyPay, a simple e-wallet application built to simulate the core flow of a modern digital wallet, from user authentication to making various types of payments.
+<div align="center">
+  <p><i>A modern e-wallet application prototype simulating the complete flow of a digital payment system</i></p>
+</div>
 
-## Core Features
+---
 
-### Authentication
-A complete auth flow using a mobile number, a (simulated) OTP, and a 4-digit user PIN.
+## 📱 Overview
 
-### Wallet Actions
-- **Add Money:** Top up your wallet balance (uses a dummy card or a dev button)
-- **Send Money:** Transfer funds to other users on the app using their mobile number
-- **Pay Merchants:** Simulate a merchant payment by entering a merchant ID
-- **Bill Payments:** A section to pay for mobile recharges, electricity, and water bills for dummy providers
-- **Kolkata Metro Booking:** A special feature to book "Aamar Kolkata Metro" tickets, complete with line/station selection, fare calculation (with a 10% discount), and a QR code ticket generator
+EasyPay is a comprehensive e-wallet prototype that demonstrates the core functionality of modern digital payment platforms, from user authentication to various payment types including a special Kolkata Metro booking feature.
 
-### Transaction History
-A searchable and filterable list of all your past transactions.
+## ✨ Core Features
 
-### Security
-Transactions like sending money or paying bills require PIN verification.
+### 🔐 Authentication
+Complete authentication flow with mobile number verification, OTP simulation, and 4-digit PIN security.
 
-## Tech Stack
+### 💰 Wallet Actions
 
-- **Frontend:** ReactJS (with Vite)
-- **Backend:** Supabase (for database and user management)
+| Feature | Description |
+|---------|-------------|
+| **Add Money** | Top up your wallet balance via dummy card or development mode |
+| **Send Money** | Transfer funds to other users using mobile number |
+| **Pay Merchants** | Simulate merchant payments with merchant ID |
+| **Bill Payments** | Pay mobile recharges, electricity, and water bills |
+| **Metro Booking** | Book Aamar Kolkata Metro tickets with QR code generation |
+
+### 📊 Transaction History
+Searchable and filterable list of all past transactions with detailed records.
+
+### 🔒 Security
+PIN verification required for sensitive transactions like money transfers and bill payments.
+
+## 🛠️ Tech Stack
+
+- **Frontend:** ReactJS (Vite)
+- **Backend:** Supabase
 - **Styling:** Tailwind CSS
 - **Routing:** React Router
 - **Icons:** Lucide React
 
-## Prototype Showcase
+## 📸 Prototype Showcase
 
-### 1. Login & Dashboard
-![Welcome](./screenshots/welcome-page.jpg)
-![Login Screen](./screenshots/login.jpg)
-![Verify OTP](./screenshots/verify-otp.jpg)
-![Enter Pin](./screenshots/enter-pin.jpg)
-![Dashboard](./screenshots/dashboard.jpg)
+### 1. Authentication Flow
 
-### 2. Core Flow: Sending Money
-![Add Money](./screenshots/add-money.jpg)
-![Send Money](./screenshots/send-money.jpg)
-![Merchant Pay](./screenshots/merchant-pay.jpg)
-![Bill Payments & Recharges](./screenshots/bill-payment-recharges.jpg)
-![Transaction History](./screenshots/transaction-history.jpg)
+<p align="center">
+  <img src="./screenshots/welcome-page.jpg" alt="Welcome Screen" width="200"/>
+  <img src="./screenshots/login.jpg" alt="Login Screen" width="200"/>
+  <img src="./screenshots/verify-otp.jpg" alt="OTP Verification" width="200"/>
+  <img src="./screenshots/enter-pin.jpg" alt="Enter PIN" width="200"/>
+</p>
 
-### 3. Feature: Metro Booking
-![Metro Selection](./screenshots/metro-selection.jpg)
-![Metro Booking](./screenshots/metro-booking.jpg)
-![Pin Verification](./screenshots/pin-verify.jpg)
-![Metro Ticket](./screenshots/metro-ticket.jpg)
+### 2. Dashboard & Core Features
 
-## How to Use This Prototype
+<p align="center">
+  <img src="./screenshots/dashboard.jpg" alt="Dashboard" width="250"/>
+  <img src="./screenshots/add-money.jpg" alt="Add Money" width="250"/>
+  <img src="./screenshots/send-money.jpg" alt="Send Money" width="250"/>
+</p>
 
-This is a demo, so many features are simplified for testing.
+### 3. Payment Options
 
-### Login Credentials
-- **Login:** You can use any 10-digit mobile number to sign up or log in
-- **OTP:** Always `123456`
-- **PIN:** Always `1234` (for setting, logging in, and authorizing transactions)
-- **KYC:** You can skip the KYC step after signing up, or just enter a name
-- **Starting Balance:** New users are given a starting balance of ₹1000.00
+<p align="center">
+  <img src="./screenshots/merchant-pay.jpg" alt="Merchant Payment" width="250"/>
+  <img src="./screenshots/bill-payment-recharges.jpg" alt="Bill Payments" width="250"/>
+  <img src="./screenshots/transaction-history.jpg" alt="Transaction History" width="250"/>
+</p>
 
-### Add Money
-- Use the "Add ₹500 for Development Mode" button for a quick top-up
-- Or, use the dummy card:
-  - **Card:** `1234 1234 1234 1234`
-  - **CVV:** `123`
+### 4. Metro Booking Feature
 
-### Send Money (Test Numbers)
-You can pretend to send money to these numbers:
+<p align="center">
+  <img src="./screenshots/metro-selection.jpg" alt="Metro Selection" width="200"/>
+  <img src="./screenshots/metro-booking.jpg" alt="Metro Booking" width="200"/>
+  <img src="./screenshots/pin-verify.jpg" alt="PIN Verification" width="200"/>
+  <img src="./screenshots/metro-ticket.jpg" alt="Metro Ticket" width="200"/>
+</p>
+
+## 🧪 Testing the Prototype
+
+This is a demo environment with simplified features for testing purposes.
+
+### 🔑 Login Credentials
+
+| Field | Value |
+|-------|-------|
+| **Mobile Number** | Any 10-digit number |
+| **OTP** | `123456` |
+| **PIN** | `1234` |
+| **Starting Balance** | ₹1,000.00 |
+
+> **Note:** You can skip the KYC step or simply enter a name after signup.
+
+### 💵 Add Money Options
+
+**Quick Development Mode:**
+- Click "Add ₹500 for Development Mode" button
+
+**Dummy Card Details:**
+- **Card Number:** `1234 1234 1234 1234`
+- **CVV:** `123`
+- **Expiry:** Any future date
+
+### 👥 Test Send Money Recipients
+
+Use these mobile numbers to test money transfers:
 - `+919876543210`
 - `+919876543211`
 - `+919876543212`
 
-### Pay Merchant (Test IDs)
-- `MERCH123` (Cafe Coffee Day)
-- `MERCH456` (Big Bazaar)
-- `MERCH789` (Pizza Hut)
+### 🏪 Test Merchant IDs
+
+- `MERCH123` — Cafe Coffee Day
+- `MERCH456` — Big Bazaar
+- `MERCH789` — Pizza Hut
+
+## 🎯 Key Highlights
+
+- **Realistic Flow:** Complete user journey from registration to transaction
+- **Metro Integration:** Special feature for Kolkata Metro ticket booking with 10% discount
+- **QR Code Generation:** Dynamic QR codes for metro tickets
+- **Transaction Management:** Comprehensive history with search and filter options
+- **Secure Transactions:** PIN-based verification for sensitive operations
