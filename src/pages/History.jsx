@@ -169,7 +169,7 @@ const History = () => {
                         )}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="font-semibold text-foreground truncate">
+                        <p className="text-sm font-semibold text-foreground truncate">
                           {displayName}
                         </p>
                         <p className="text-xs text-muted-foreground">
@@ -189,7 +189,7 @@ const History = () => {
                     </div>
                     <div className="text-right flex-shrink-0 ml-4">
                       <p
-                        className={`font-bold text-lg ${
+                        className={`font-bold text-base ${
                           isPositive ? "text-success" : "text-destructive"
                         }`}
                       >

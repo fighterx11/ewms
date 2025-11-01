@@ -24,7 +24,7 @@ const MetroBooking = () => {
 
   const metroLines = {
     blue: {
-      name: "Blue Line (North-South)",
+      name: "Blue Line",
       color: "bg-blue-500",
       stations: [
         "Dakshineswar", "Baranagar", "Noapara", "Belgachia", "Shyambazar",
@@ -35,7 +35,7 @@ const MetroBooking = () => {
       ]
     },
     green: {
-      name: "Green Line (East-West)",
+      name: "Green Line",
       color: "bg-green-500",
       stations: [
         "Sector V", "Salt Lake Stadium", "Central Park", "City Centre",
