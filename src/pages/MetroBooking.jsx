@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft, X, Search } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import PinVerification from "@/components/PinVerification";
@@ -18,6 +19,8 @@ const MetroBooking = () => {
   const [calculatedFare, setCalculatedFare] = useState(0);
   const [showTicket, setShowTicket] = useState(false);
   const [ticketData, setTicketData] = useState(null);
+  const [fromStationSearch, setFromStationSearch] = useState("");
+  const [toStationSearch, setToStationSearch] = useState("");
 
   const metroLines = {
     blue: {
@@ -100,7 +103,28 @@ const MetroBooking = () => {
     setFromStation("");
     setToStation("");
     setCalculatedFare(0);
+    setFromStationSearch("");
+    setToStationSearch("");
   };
+
+  // Filter stations based on search
+  const filteredFromStations = useMemo(() => {
+    if (!selectedLine) return [];
+    const stations = metroLines[selectedLine].stations;
+    if (!fromStationSearch) return stations;
+    return stations.filter(station =>
+      station.toLowerCase().includes(fromStationSearch.toLowerCase())
+    );
+  }, [selectedLine, fromStationSearch]);
+
+  const filteredToStations = useMemo(() => {
+    if (!selectedLine) return [];
+    const stations = metroLines[selectedLine].stations;
+    if (!toStationSearch) return stations;
+    return stations.filter(station =>
+      station.toLowerCase().includes(toStationSearch.toLowerCase())
+    );
+  }, [selectedLine, toStationSearch]);
 
   const handleInitiateBooking = () => {
     const userId = sessionStorage.getItem("easypay_user_id");
@@ -303,43 +327,117 @@ const MetroBooking = () => {
               {/* From Station */}
               <div className="space-y-2 mb-4">
                 <Label>From Station</Label>
-                <div className="max-h-40 overflow-y-auto border rounded-md p-2">
-                  {metroLines[selectedLine].stations.map((station) => (
-                    <button
-                      key={station}
-                      onClick={() => handleStationChange("from", station)}
-                      className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                        fromStation === station
-                          ? "bg-primary text-primary-foreground font-semibold"
-                          : "hover:bg-accent"
-                      }`}
-                      disabled={toStation === station}
+                {fromStation ? (
+                  <div className="flex items-center justify-between p-4 bg-primary/10 rounded-lg border-2 border-primary">
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-1">Selected Station</p>
+                      <p className="font-semibold text-foreground">{fromStation}</p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        setFromStation("");
+                        setCalculatedFare(0);
+                      }}
+                      className="h-8 w-8"
                     >
-                      {station}
-                    </button>
-                  ))}
-                </div>
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="relative mb-2">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input
+                        type="text"
+                        placeholder="Search stations..."
+                        value={fromStationSearch}
+                        onChange={(e) => setFromStationSearch(e.target.value)}
+                        className="pl-10"
+                      />
+                    </div>
+                    <div className="max-h-48 overflow-y-auto border rounded-lg bg-background">
+                      {filteredFromStations.length > 0 ? (
+                        filteredFromStations.map((station) => (
+                          <button
+                            key={station}
+                            onClick={() => {
+                              handleStationChange("from", station);
+                              setFromStationSearch("");
+                            }}
+                            className="w-full text-left px-4 py-3 text-sm transition-colors hover:bg-accent border-b last:border-b-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled={toStation === station}
+                          >
+                            {station}
+                          </button>
+                        ))
+                      ) : (
+                        <div className="p-4 text-center text-sm text-muted-foreground">
+                          No stations found
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* To Station */}
               <div className="space-y-2 mb-4">
                 <Label>To Station</Label>
-                <div className="max-h-40 overflow-y-auto border rounded-md p-2">
-                  {metroLines[selectedLine].stations.map((station) => (
-                    <button
-                      key={station}
-                      onClick={() => handleStationChange("to", station)}
-                      className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                        toStation === station
-                          ? "bg-primary text-primary-foreground font-semibold"
-                          : "hover:bg-accent"
-                      }`}
-                      disabled={fromStation === station}
+                {toStation ? (
+                  <div className="flex items-center justify-between p-4 bg-primary/10 rounded-lg border-2 border-primary">
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-1">Selected Station</p>
+                      <p className="font-semibold text-foreground">{toStation}</p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        setToStation("");
+                        setCalculatedFare(0);
+                      }}
+                      className="h-8 w-8"
                     >
-                      {station}
-                    </button>
-                  ))}
-                </div>
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="relative mb-2">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input
+                        type="text"
+                        placeholder="Search stations..."
+                        value={toStationSearch}
+                        onChange={(e) => setToStationSearch(e.target.value)}
+                        className="pl-10"
+                      />
+                    </div>
+                    <div className="max-h-48 overflow-y-auto border rounded-lg bg-background">
+                      {filteredToStations.length > 0 ? (
+                        filteredToStations.map((station) => (
+                          <button
+                            key={station}
+                            onClick={() => {
+                              handleStationChange("to", station);
+                              setToStationSearch("");
+                            }}
+                            className="w-full text-left px-4 py-3 text-sm transition-colors hover:bg-accent border-b last:border-b-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled={fromStation === station}
+                          >
+                            {station}
+                          </button>
+                        ))
+                      ) : (
+                        <div className="p-4 text-center text-sm text-muted-foreground">
+                          No stations found
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* Fare Display */}
